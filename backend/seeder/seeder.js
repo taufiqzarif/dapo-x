@@ -26,6 +26,11 @@ const importData = async () => {
     });
 
     await MenuItem.insertMany(sampleMenuItems);
+
+    // Assign default address to admin user
+    createdUsers[0].defaultAddress = createdUsers[0].addresses[0]._id;
+    await createdUsers[0].save();
+
     console.log('Data Imported!'.green.inverse);
     process.exit();
   } catch (error) {
