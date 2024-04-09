@@ -1,15 +1,14 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const addressSchema = mongoose.Schema(
   {
-    addressId: { type: String, required: true },
     addressName: { type: String },
     street: { type: String, required: true },
     city: { type: String, required: true },
     state: { type: String, required: true },
     zipCode: { type: String, required: true },
   },
-  { _id: false }
+  { _id: true }
 );
 
 const userSchema = mongoose.Schema(
@@ -17,8 +16,11 @@ const userSchema = mongoose.Schema(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     name: { type: String, required: true },
-    role: { type: String, required: true, default: "user" },
-    defaultAddressId: { type: String, required: false },
+    role: { type: String, required: true, default: 'user' },
+    defaultAddress: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Address',
+    },
     addresses: [addressSchema],
     phone: { type: String, required: true },
   },
@@ -31,9 +33,9 @@ userSchema.methods.matchPassword = async function (enteredPassword) {
 };
 
 // Middleware to hash password before saving
-userSchema.pre("save", async function (next) {
+userSchema.pre('save', async function (next) {
   // Only hash the password if it has been modified (or is new)
-  if (!this.isModified("password")) {
+  if (!this.isModified('password')) {
     next();
   }
 
@@ -41,6 +43,6 @@ userSchema.pre("save", async function (next) {
   this.password = await bcrypt.hash(this.password, salt);
 });
 
-const User = mongoose.model("User", userSchema);
+const User = mongoose.model('User', userSchema);
 
 export default User;
