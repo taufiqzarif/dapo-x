@@ -7,8 +7,7 @@ const addressSchema = mongoose.Schema(
     city: { type: String, required: true },
     state: { type: String, required: true },
     zipCode: { type: String, required: true },
-  },
-  { _id: true }
+  }
 );
 
 const userSchema = mongoose.Schema(

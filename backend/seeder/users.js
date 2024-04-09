@@ -17,6 +17,13 @@ const users = [
         state: 'Sarawak',
         zipCode: '98000',
       },
+      {
+        _id: new mongoose.Types.ObjectId(),
+        street: '456 No address name',
+        city: 'Miri',
+        state: 'Sarawak',
+        zipCode: '98000',
+      },
     ],
     phone: '0123456789',
   },
