@@ -2,6 +2,8 @@ import express from "express";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import connectDB from "./config/db.js";
+import passport from "passport";
+import './config/passportConfig.js';
 dotenv.config();
 
 const port = process.env.PORT || 7000;
@@ -18,6 +20,9 @@ app.use(express.urlencoded({ extended: true }));
 
 // Middleware: Cookie parser
 app.use(cookieParser());
+
+// Middleware: Passport
+app.use(passport.initialize());
 
 app.get("/", (req, res) => {
   res.send("API is running...");
