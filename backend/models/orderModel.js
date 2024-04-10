@@ -18,33 +18,60 @@ const orderSchema = mongoose.Schema(
         price: { type: Number, required: true },
       },
     ],
+    deliveryPrice: {
+      type: Number,
+      required: true,
+      default: 0.0,
+    },
+    taxPrice: {
+      type: Number,
+      required: true,
+      default: 0.0,
+    },
     totalPrice: {
       type: Number,
       required: true,
       default: 0.0,
     },
-    status: { type: String },
+    isPaid: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
+    paidAt: { type: Date },
+    paymentMethod: { type: String, required: true },
+    paymentResult: {
+      id: { type: String },
+      status: { type: String },
+      update_time: { type: String },
+      email_address: { type: String },
+    },
+    orderStatus: { type: String },
     deliveryAddress: {
       street: { type: String, required: true },
       city: { type: String, required: true },
       state: { type: String, required: true },
       zipCode: { type: String, required: true },
     },
-    expectedDeliveryDate: {
+    deliveryDate: {
       type: Date,
       required: true,
     },
-    actualDeliveryDate: { type: Date },
-    qrCode: {
-      data: { type: String, required: true },
-      scanned: { type: Boolean, required: true, default: false },
+    deliveredAt: { type: Date },
+    deliveredBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
     },
-    note: { type: String },
     isDelivered: {
       type: Boolean,
       required: true,
       default: false,
     },
+    qrCode: {
+      data: { type: String, required: true },
+      scanned: { type: Boolean, required: true, default: false },
+    },
+    note: { type: String },
   },
   { timestamps: true }
 );
