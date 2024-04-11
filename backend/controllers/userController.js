@@ -50,4 +50,35 @@ const registerUser = asyncHandler(async (req, res) => {
   });
 });
 
-export { authUser, registerUser };
+// @desc    Log user out
+// @route   POST /api/users/logout
+// @access  Private
+const logoutUser = asyncHandler(async (req, res) => {
+  res.cookie('jwt', "", {
+    expires: new Date(0),
+    httpOnly: true
+  });
+
+  res.status(200).json({ message: 'Logged out' });
+})
+
+// @desc    Get user profile
+// @route   GET /api/users/profile
+// @access  Private
+const getUserProfile = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id).select('-password');
+
+  if (user) {
+    res.status(200).json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+    });
+  } else {
+    res.status(404);
+    throw new Error('User not found');
+  }
+});
+
+export { authUser, registerUser, logoutUser, getUserProfile };
