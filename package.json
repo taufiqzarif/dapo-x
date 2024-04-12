@@ -12,7 +12,8 @@
     "seed": "node backend/seeder/seeder.js",
     "seed:destroy": "node backend/seeder/seeder.js --d",
     "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "lint": "npx lint-staged --quiet"
   },
   "author": "Taufiq Zarif",
   "license": "MIT",
@@ -40,7 +41,7 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
-      "prettier --write --quiet"
+      "prettier --write"
     ]
   }
 }
