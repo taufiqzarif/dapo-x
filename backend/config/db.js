@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-import "colors";
+import mongoose from 'mongoose';
+import 'colors';
 
 const maxRetryAttempts = 5;
 const retryInterval = 1000; // 1 second
@@ -12,7 +12,7 @@ const connectDB = async () => {
     console.log(`MongoDB Connected!`.cyan.underline.bold);
   } catch (error) {
     console.error(
-      `Error: ${error?.message || "Error connecting db!"}`.red.underline.bold
+      `Error: ${error?.message || 'Error connecting db!'}`.red.underline.bold
     );
     if (retryAttempts < maxRetryAttempts) {
       retryAttempts++;
@@ -27,7 +27,7 @@ const connectDB = async () => {
   }
 };
 
-mongoose.connection.on("disconnected", async () => {
+mongoose.connection.on('disconnected', async () => {
   console.log(`MongoDB disconnected!`.red.underline.bold);
   await connectDB();
 });

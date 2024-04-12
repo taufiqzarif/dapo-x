@@ -1,10 +1,10 @@
-import express from "express";
-import dotenv from "dotenv";
-import cookieParser from "cookie-parser";
-import connectDB from "./config/db.js";
-import passport from "passport";
-import userRoutes from "./routes/userRoutes.js";
-import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
+import express from 'express';
+import dotenv from 'dotenv';
+import cookieParser from 'cookie-parser';
+import connectDB from './config/db.js';
+import passport from 'passport';
+import userRoutes from './routes/userRoutes.js';
+import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 import './config/passportConfig.js';
 dotenv.config();
 
@@ -28,8 +28,8 @@ app.use(passport.initialize());
 
 app.use('/api/users', userRoutes);
 
-app.get("/", (req, res) => {
-  res.send("API is running...");
+app.get('/', (req, res) => {
+  res.send('API is running...');
 });
 
 app.use(notFound);
