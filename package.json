@@ -14,7 +14,7 @@
     "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend",
     "prepare": "husky install",
     "lint": "npx lint-staged --quiet",
-    "prettify": "prettier --write '**/*.{js,jsx,ts,tsx}'",
+    "prettify": "prettier --write --log-level silent '**/*.{js,jsx,ts,tsx}'",
     "lint:fix": "npm run prettify && npm run lint"
   },
   "author": "Taufiq Zarif",
