@@ -18,6 +18,7 @@ const options = {
 // Local Strategy
 passport.use(
   new LocalStrategy(
+    { usernameField: 'email', passwordField: 'password' },
     asyncHandler(async (email, password, done) => {
       const user = await User.findOne({ email });
 

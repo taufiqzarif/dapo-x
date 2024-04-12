@@ -4,6 +4,7 @@ import {
   registerUser,
   logoutUser,
   getUserProfile,
+  getUserById,
 } from '../controllers/userController.js';
 import { protect, admin } from '../middleware/authMiddleware.js';
 import checkObjectId from '../middleware/checkObjectId.js';
@@ -16,5 +17,6 @@ router.route('/').post(validateRequest(registerSchema), registerUser);
 router.post('/auth', authUser);
 router.post('/logout', protect, logoutUser);
 router.route('/profile').get(protect, getUserProfile);
+router.get('/:id', protect, admin, checkObjectId, getUserById);
 
 export default router;

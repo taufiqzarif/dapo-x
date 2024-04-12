@@ -7,7 +7,9 @@ import User from '../models/userModel.js';
 // @route   POST /api/users/login
 // @access  Public
 const authUser = asyncHandler(async (req, res) => {
+  // console.log(req.body);
   passport.authenticate('local', { session: false }, (err, user) => {
+    // console.log(err, user);
     if (err || !user) {
       res.status(401);
       throw new Error('Invalid credentials');
@@ -101,4 +103,18 @@ const getUserProfile = asyncHandler(async (req, res) => {
   }
 });
 
-export { authUser, registerUser, logoutUser, getUserProfile };
+// @desc    Get user by ID
+// @route   GET /api/users/:id
+// @access  Private/Admin
+const getUserById = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id).select('-password');
+
+  if (user) {
+    res.status(200).json(user);
+  } else {
+    res.status(404);
+    throw new Error('User not found');
+  }
+});
+
+export { authUser, registerUser, logoutUser, getUserProfile, getUserById };
