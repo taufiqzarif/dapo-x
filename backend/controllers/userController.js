@@ -7,21 +7,20 @@ import User from '../models/userModel.js';
 // @route   POST /api/users/login
 // @access  Public
 const authUser = asyncHandler(async (req, res) => {
-  // console.log(req.body);
   passport.authenticate('local', { session: false }, (err, user) => {
-    // console.log(err, user);
     if (err || !user) {
-      res.status(401);
-      throw new Error('Invalid credentials');
+      res.status(401).json({
+        message: 'Invalid email or password',
+      });
+    } else {
+      generateToken(res, user._id);
+
+      res.status(200).json({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+      });
     }
-
-    generateToken(res, user._id);
-
-    res.json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-    });
   })(req, res);
 });
 
