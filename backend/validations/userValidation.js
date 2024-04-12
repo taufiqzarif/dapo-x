@@ -14,7 +14,8 @@ const registerSchema = Joi.object({
       state: Joi.string().required(),
       zipCode: Joi.string().required(),
     })
-  ),
+  ).min(1),
+  defaultAddressIndex: Joi.number().integer().min(0).required(),
 });
 
 export { registerSchema };
