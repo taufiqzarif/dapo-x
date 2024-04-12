@@ -68,7 +68,7 @@ const orderSchema = mongoose.Schema(
       default: false,
     },
     qrCode: {
-      data: { type: String, required: true },
+      trackingNumber: { type: String, required: true },
       scanned: { type: Boolean, required: true, default: false },
     },
     note: { type: String },
