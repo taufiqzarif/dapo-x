@@ -37,11 +37,11 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new Error('Already registered');
   }
 
-  // Validate default address index
+  // Check if the default address index is out of range
   if (
-    !addresses ||
-    defaultAddressIndex >= addresses.length ||
-    defaultAddressIndex < 0
+    addresses &&
+    defaultAddressIndex !== undefined &&
+    (defaultAddressIndex < 0 || defaultAddressIndex >= addresses.length)
   ) {
     res.status(400);
     throw new Error('Default address index out of range');
@@ -53,9 +53,6 @@ const registerUser = asyncHandler(async (req, res) => {
     addresses,
     ...otherData,
   });
-
-  // Set the default address using the validated index
-  user.defaultAddress = addresses[defaultAddressIndex]._id; // Assigning the MongoDB ID before save to ensure it exists
 
   // Save the user
   await user.save();

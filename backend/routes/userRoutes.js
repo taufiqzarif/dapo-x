@@ -10,14 +10,18 @@ import {
 import { protect, admin } from '../middleware/authMiddleware.js';
 import checkObjectId from '../middleware/checkObjectId.js';
 import validateRequest from '../middleware/validateRequest.js';
-import { registerSchema } from '../validations/userValidation.js';
+import {
+  localRegisterSchema,
+  googleRegisterSchema,
+} from '../validations/userValidation.js';
 import passport from 'passport';
+import generateToken from '../utils/generateToken.js';
 
 const router = express.Router();
 
 router
   .route('/')
-  .post(validateRequest(registerSchema), registerUser)
+  .post(validateRequest(localRegisterSchema), registerUser)
   .get(protect, admin, getUsers);
 router.post('/auth', authUser);
 router.post('/logout', protect, logoutUser);
@@ -32,14 +36,13 @@ router.get(
 router.get(
   '/auth/google/callback',
   passport.authenticate('google', {
-    successRedirect: 'http://localhost:3000',
-    failureRedirect: 'http://localhost:3000',
+    failureRedirect: '/',
+    session: false,
   }),
   (req, res) => {
-    console.log(req);
-    //   // Successful authentication, now issue a token or redirect.
-    //   // generateToken(req.user._id);
-    //   res.redirect(`/`); // You can redirect with the token as a query parameter or set it in a cookie.
+    console.log(req.user._id); // This is the user ID from the database
+    generateToken(res, req.user._id);
+    res.redirect(`/`);
   }
 );
 
