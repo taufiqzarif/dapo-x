@@ -5,6 +5,7 @@ import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
 import User from '../models/userModel.js';
+import generateToken from '../utils/generateToken.js';
 dotenv.config();
 
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
@@ -59,13 +60,24 @@ passport.use(
     {
       clientID: GOOGLE_CLIENT_ID,
       clientSecret: GOOGLE_CLIENT_SECRET,
-      callbackURL: `${process.env.BACKEND_BASE_URL}/auth/google/callback`,
+      callbackURL: `http://localhost:8000/api/users/auth/google/callback`,
       passReqToCallback: true,
     },
-    asyncHandler(async (accessToken, refreshToken, profile, cb) => {
-      // Console log the profile to see what data is available
-      console.log(profile);
-      cb(null, profile);
-    })
+    async (req, res, accessToken, refreshToken, profile, cb) => {
+      console.log('profile', profile);
+      const defaultEmail = profile.emails[0].value;
+      let user = await User.findOne({ email: defaultEmail });
+
+      if (!user) {
+        user = await User.create({
+          name: profile.displayName,
+          email: defaultEmail,
+        });
+      }
+
+      generateToken(res, user._id);
+
+      cb(null, user);
+    }
   )
 );
