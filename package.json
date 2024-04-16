@@ -4,6 +4,9 @@
   "description": "Food ordering built with MERN",
   "main": "server.js",
   "type": "module",
+  "engines": {
+    "node": ">=14.0.0"
+  },
   "scripts": {
     "start": "node backend/server.js",
     "server": "nodemon backend/server.js",
@@ -36,6 +39,7 @@
   "devDependencies": {
     "concurrently": "^8.2.2",
     "dotenv": "^16.4.5",
+    "eslint": "^9.0.0",
     "husky": "^9.0.11",
     "lint-staged": "^15.2.2",
     "nodemon": "^3.1.0",
