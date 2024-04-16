@@ -10,8 +10,12 @@
     "client": "npm start --prefix frontend",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "seed": "node backend/seeder/seeder.js",
-    "seed:destroy": "node backend/seeder/seeder.js --d",
-    "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend"
+    "seed:destroy": "node backend/seeder/seeder.js -d",
+    "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend",
+    "prepare": "husky install",
+    "lint": "npx lint-staged --quiet",
+    "prettify": "prettier --write --log-level silent '**/*.{js,jsx,ts,tsx}'",
+    "lint:fix": "npm run prettify && npm run lint"
   },
   "author": "Taufiq Zarif",
   "license": "MIT",
@@ -32,6 +36,14 @@
   "devDependencies": {
     "concurrently": "^8.2.2",
     "dotenv": "^16.4.5",
-    "nodemon": "^3.1.0"
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.2",
+    "nodemon": "^3.1.0",
+    "prettier": "^3.2.5"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "prettier --write"
+    ]
   }
 }

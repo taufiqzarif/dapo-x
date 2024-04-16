@@ -1,20 +1,29 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 
-const addressSchema = mongoose.Schema(
-  {
-    addressName: { type: String },
-    street: { type: String, required: true },
-    city: { type: String, required: true },
-    state: { type: String, required: true },
-    zipCode: { type: String, required: true },
-  }
-);
+const addressSchema = mongoose.Schema({
+  addressName: { type: String },
+  street: { type: String, required: true },
+  city: { type: String, required: true },
+  state: { type: String, required: true },
+  zipCode: { type: String, required: true },
+});
 
 const userSchema = mongoose.Schema(
   {
+    method: {
+      type: String,
+      enum: ['local', 'google'],
+      required: true,
+      default: 'local',
+    },
     email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
+    password: {
+      type: String,
+      required: function () {
+        return this.method === 'local';
+      },
+    },
     name: { type: String, required: true },
     role: { type: String, required: true, default: 'user' },
     defaultAddress: {
@@ -22,7 +31,7 @@ const userSchema = mongoose.Schema(
       ref: 'Address',
     },
     addresses: [addressSchema],
-    phone: { type: String, required: true },
+    phone: { type: String },
   },
   { timestamps: true }
 );

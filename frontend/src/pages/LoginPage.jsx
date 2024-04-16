@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
-import {useLocation, useNavigate} from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useLoginMutation } from '../slices/usersApiSlice';
 import { setCredentials } from '../slices/authSlice';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -25,9 +25,7 @@ const LoginPage = () => {
       navigate(redirect);
     }
   }, [userInfo, navigate, redirect]);
-  return (
-    <div>LoginPage</div>
-  )
-}
+  return <div>LoginPage</div>;
+};
 
-export default LoginPage
+export default LoginPage;
