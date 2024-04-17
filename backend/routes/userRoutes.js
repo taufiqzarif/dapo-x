@@ -16,8 +16,6 @@ import {
   localRegisterSchema,
   googleRegisterSchema,
 } from '../validations/userValidation.js';
-import passport from 'passport';
-import generateToken from '../utils/generateToken.js';
 
 const router = express.Router();
 

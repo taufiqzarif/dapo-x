@@ -6,7 +6,7 @@ import User from '../models/userModel.js';
 // @desc    Auth user & get token
 // @route   POST /api/users/login
 // @access  Public
-const authUser = asyncHandler(async (req, res) => {
+const authUser = asyncHandler(async (req, res, next) => {
   passport.authenticate('local', { session: false }, (err, user) => {
     if (err || !user) {
       res.status(401).json({
@@ -21,20 +21,22 @@ const authUser = asyncHandler(async (req, res) => {
         email: user.email,
       });
     }
-  })(req, res);
+  })(req, res, next);
 });
 
 // @desc    Auth user with Google
 // @route   GET /api/users/auth/google
 // @access  Public
-const authUserGoogle = passport.authenticate('google', {
-  scope: ['profile', 'email'],
+const authUserGoogle = asyncHandler(async (req, res, next) => {
+  passport.authenticate('google', {
+    scope: ['profile', 'email'],
+  })(req, res, next);
 });
 
 // @desc    Callback for Google authentication
 // @route   GET /api/users/auth/google/callback
 // @access  Public
-const authUserGoogleCallback = (req, res, next) => {
+const authUserGoogleCallback = asyncHandler(async (req, res, next) => {
   passport.authenticate(
     'google',
     {
@@ -42,6 +44,7 @@ const authUserGoogleCallback = (req, res, next) => {
       session: false,
     },
     (err, user) => {
+      console.log('user', user);
       if (err) {
         return next(err);
       }
@@ -52,7 +55,7 @@ const authUserGoogleCallback = (req, res, next) => {
       res.redirect(`/`);
     }
   )(req, res, next);
-};
+});
 
 // @desc    Register a new user
 // @route   POST /api/users
