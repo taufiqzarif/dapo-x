@@ -24,6 +24,36 @@ const authUser = asyncHandler(async (req, res) => {
   })(req, res);
 });
 
+// @desc    Auth user with Google
+// @route   GET /api/users/auth/google
+// @access  Public
+const authUserGoogle = passport.authenticate('google', {
+  scope: ['profile', 'email'],
+});
+
+// @desc    Callback for Google authentication
+// @route   GET /api/users/auth/google/callback
+// @access  Public
+const authUserGoogleCallback = (req, res, next) => {
+  passport.authenticate(
+    'google',
+    {
+      failureRedirect: '/',
+      session: false,
+    },
+    (err, user) => {
+      if (err) {
+        return next(err);
+      }
+      if (!user) {
+        return res.redirect('/');
+      }
+      generateToken(res, user._id);
+      res.redirect(`/`);
+    }
+  )(req, res, next);
+};
+
 // @desc    Register a new user
 // @route   POST /api/users
 // @access  Public
@@ -128,6 +158,8 @@ const getUsers = asyncHandler(async (req, res) => {
 
 export {
   authUser,
+  authUserGoogle,
+  authUserGoogleCallback,
   registerUser,
   logoutUser,
   getUserProfile,

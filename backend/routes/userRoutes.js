@@ -1,6 +1,8 @@
 import express from 'express';
 import {
   authUser,
+  authUserGoogle,
+  authUserGoogleCallback,
   registerUser,
   logoutUser,
   getUserProfile,
@@ -28,23 +30,9 @@ router.post('/logout', protect, logoutUser);
 router.route('/profile').get(protect, getUserProfile);
 router.get('/:id', protect, admin, checkObjectId, getUserById);
 
-router.get(
-  '/auth/google',
-  passport.authenticate('google', { scope: ['profile', 'email'] })
-);
+router.get('/auth/google', authUserGoogle);
 
-router.get(
-  '/auth/google/callback',
-  passport.authenticate('google', {
-    failureRedirect: '/',
-    session: false,
-  }),
-  (req, res) => {
-    console.log(req.user._id); // This is the user ID from the database
-    generateToken(res, req.user._id);
-    res.redirect(`/`);
-  }
-);
+router.get('/auth/google/callback', authUserGoogleCallback);
 
 router.get('/auth/google/failure', (req, res) => {
   res.status(401).json({ message: 'Google authentication failed' });
