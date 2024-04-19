@@ -61,13 +61,27 @@ const authUserGoogleCallback = asyncHandler(async (req, res, next) => {
 // @route   POST /api/users
 // @access  Public
 const registerUser = asyncHandler(async (req, res) => {
-  const { email, addresses, defaultAddressIndex, ...otherData } = req.body;
+  const {
+    email,
+    password,
+    addresses,
+    defaultAddressIndex,
+    phone,
+    ...otherData
+  } = req.body;
 
   // Check if the user already exists
   const userExists = await User.findOne({ email });
   if (userExists) {
     res.status(400);
-    throw new Error('Already registered');
+    throw new Error('Email already registered');
+  }
+
+  // Check if the phone number is already in use
+  const phoneExists = await User.findOne({ phone });
+  if (phoneExists) {
+    res.status(400);
+    throw new Error('Phone number already registered');
   }
 
   // Check if the default address index is out of range
@@ -84,6 +98,9 @@ const registerUser = asyncHandler(async (req, res) => {
   const user = new User({
     email,
     addresses,
+    phone,
+    defaultAddressIndex,
+    authMethods: [{ provider: 'local', password }],
     ...otherData,
   });
 
