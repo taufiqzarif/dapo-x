@@ -30,7 +30,7 @@ const userSchema = mongoose.Schema(
       ref: 'Address',
     },
     addresses: [addressSchema],
-    phone: { type: String, required: true, unique: true },
+    phone: { type: String, unique: true },
     verified: { type: Boolean, default: false }, // Limit access to unverified users e.g. (order placement)
   },
   { timestamps: true }
