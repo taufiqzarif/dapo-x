@@ -1,5 +1,7 @@
+import HomePage from './pages/HomePage';
+
 const App = () => {
-  return <div>Dapo X</div>;
+  return <HomePage />;
 };
 
 export default App;
