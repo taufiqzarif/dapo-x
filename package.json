@@ -4,14 +4,21 @@
   "description": "Food ordering built with MERN",
   "main": "server.js",
   "type": "module",
+  "engines": {
+    "node": ">=14.0.0"
+  },
   "scripts": {
     "start": "node backend/server.js",
     "server": "nodemon backend/server.js",
     "client": "npm start --prefix frontend",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "seed": "node backend/seeder.js",
-    "seed:destroy": "node backend/seeder.js --d",
-    "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend"
+    "seed": "node backend/seeder/seeder.js",
+    "seed:destroy": "node backend/seeder/seeder.js -d",
+    "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend",
+    "prepare": "husky install",
+    "lint": "npx lint-staged --quiet",
+    "prettify": "prettier --write --log-level silent '**/*.{js,jsx,ts,tsx}'",
+    "lint:fix": "npm run prettify && npm run lint"
   },
   "author": "Taufiq Zarif",
   "license": "MIT",
@@ -20,6 +27,7 @@
     "colors": "^1.4.0",
     "cookie-parser": "^1.4.6",
     "express": "^4.19.2",
+    "joi": "^17.12.3",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.3.0",
     "multer": "^1.4.5-lts.1",
@@ -31,6 +39,15 @@
   "devDependencies": {
     "concurrently": "^8.2.2",
     "dotenv": "^16.4.5",
-    "nodemon": "^3.1.0"
+    "eslint": "^9.0.0",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.2",
+    "nodemon": "^3.1.0",
+    "prettier": "^3.2.5"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "prettier --write"
+    ]
   }
 }
