@@ -6,7 +6,7 @@ import User from '../models/userModel.js';
 // @desc    Auth user & get token
 // @route   POST /api/users/login
 // @access  Public
-const authUser = asyncHandler(async (req, res) => {
+const authUser = asyncHandler(async (req, res, next) => {
   passport.authenticate('local', { session: false }, (err, user) => {
     if (err || !user) {
       res.status(401).json({
@@ -21,20 +21,76 @@ const authUser = asyncHandler(async (req, res) => {
         email: user.email,
       });
     }
-  })(req, res);
+  })(req, res, next);
+});
+
+// @desc    Auth user with Google
+// @route   GET /api/users/auth/google
+// @access  Public
+const authUserGoogle = asyncHandler(async (req, res, next) => {
+  console.log('Went through authUserGoogle');
+  passport.authenticate('google', {
+    scope: ['profile', 'email'],
+  })(req, res, next);
+});
+
+// @desc    Callback for Google authentication
+// @route   GET /api/users/auth/google/callback
+// @access  Public
+const authUserGoogleCallback = asyncHandler(async (req, res, next) => {
+  passport.authenticate(
+    'google',
+    {
+      failureRedirect: '/',
+      session: false,
+    },
+    async (err, user) => {
+      console.log('user', user);
+      if (err) {
+        return next(err);
+      }
+      if (!user) {
+        return res.redirect('/');
+      }
+
+      console.log('Went through authUserGoogleCallback');
+
+      //since Register through google, verify become true terus
+      user.verified = true;
+      await user.save();
+
+      generateToken(res, user._id);
+      res.redirect(`/`);
+    }
+  )(req, res, next);
 });
 
 // @desc    Register a new user
 // @route   POST /api/users
 // @access  Public
 const registerUser = asyncHandler(async (req, res) => {
-  const { email, addresses, defaultAddressIndex, ...otherData } = req.body;
+  console.log('Went through regUser');
+  const {
+    email,
+    password,
+    addresses,
+    defaultAddressIndex,
+    phone,
+    ...otherData
+  } = req.body;
 
   // Check if the user already exists
   const userExists = await User.findOne({ email });
   if (userExists) {
     res.status(400);
-    throw new Error('Already registered');
+    throw new Error('Email already registered');
+  }
+
+  // Check if the phone number is already in use
+  const phoneExists = await User.findOne({ phone });
+  if (phoneExists) {
+    res.status(400);
+    throw new Error('Phone number already registered');
   }
 
   // Check if the default address index is out of range
@@ -51,6 +107,9 @@ const registerUser = asyncHandler(async (req, res) => {
   const user = new User({
     email,
     addresses,
+    phone,
+    defaultAddressIndex,
+    authMethods: [{ provider: 'local', password }],
     ...otherData,
   });
 
@@ -72,6 +131,7 @@ const registerUser = asyncHandler(async (req, res) => {
 // @route   POST /api/users/logout
 // @access  Private
 const logoutUser = asyncHandler(async (req, res) => {
+  console.log('Went through logoutuser');
   res.cookie('jwt', '', {
     expires: new Date(0),
     httpOnly: true,
@@ -84,6 +144,7 @@ const logoutUser = asyncHandler(async (req, res) => {
 // @route   GET /api/users/profile
 // @access  Private
 const getUserProfile = asyncHandler(async (req, res) => {
+  console.log('Went through getuserprofile');
   const user = await User.findById(req.user._id).select('-password');
 
   if (user) {
@@ -103,6 +164,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
 // @route   GET /api/users/:id
 // @access  Private/Admin
 const getUserById = asyncHandler(async (req, res) => {
+  console.log('Went through authUserbyid');
   const user = await User.findById(req.params.id).select('-password');
 
   if (user) {
@@ -117,6 +179,7 @@ const getUserById = asyncHandler(async (req, res) => {
 // @route  GET /api/users
 // @access Private/Admin
 const getUsers = asyncHandler(async (req, res) => {
+  console.log('Went through getusers');
   const users = await User.find({});
   if (users) {
     res.status(200).json(users);
@@ -128,6 +191,8 @@ const getUsers = asyncHandler(async (req, res) => {
 
 export {
   authUser,
+  authUserGoogle,
+  authUserGoogleCallback,
   registerUser,
   logoutUser,
   getUserProfile,
