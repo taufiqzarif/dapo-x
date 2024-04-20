@@ -42,7 +42,7 @@ const users = [
         zipCode: '98000',
       },
     ],
-    phone: '0123456789',
+    phone: '01234567890',
   },
   {
     email: 'test2@test.com',
@@ -67,7 +67,7 @@ const users = [
         zipCode: '98000',
       },
     ],
-    phone: '0123456789',
+    phone: '01234567891',
   },
 ];
 
