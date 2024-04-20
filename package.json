@@ -5,13 +5,15 @@
   "main": "server.js",
   "type": "module",
   "engines": {
-    "node": ">=14.0.0"
+    "node": "20.12.2"
   },
+  "engineStrict": true,
   "scripts": {
+    "prestart": "node checkNodeVersion.js",
     "start": "node backend/server.js",
     "server": "nodemon backend/server.js",
     "client": "npm start --prefix frontend",
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "dev": "concurrently \"npm run prestart && npm run server\" \"npm run prestart && npm run client\"",
     "seed": "node backend/seeder/seeder.js",
     "seed:destroy": "node backend/seeder/seeder.js -d",
     "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend",
