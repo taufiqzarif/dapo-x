@@ -29,9 +29,6 @@ app.use(passport.initialize());
 
 app.use('/api/users', userRoutes);
 
-app.use(notFound);
-app.use(errorHandler);
-
 const __dirname = path.resolve(); // Set __dirname to the current working directory
 
 if (process.env.NODE_ENV === 'staging') {
@@ -45,6 +42,9 @@ if (process.env.NODE_ENV === 'staging') {
     res.send('API is running...');
   });
 }
+
+app.use(notFound);
+app.use(errorHandler);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
