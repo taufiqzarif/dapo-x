@@ -69,23 +69,7 @@ passport.use(
       try {
         console.log('profile', profile);
 
-        const defaultEmail = profile.emails[0].value;
-
-        if (!defaultEmail) {
-          return cb(null, false, { message: 'Email not found' });
-        }
-
-        let user = await User.findOne({ email: defaultEmail });
-
-        if (!user) {
-          user = await User.create({
-            name: profile.displayName,
-            email: defaultEmail,
-            method: 'google',
-          });
-        }
-
-        return cb(null, user);
+        return cb(null, profile);
       } catch (error) {
         return cb(error);
       }
