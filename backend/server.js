@@ -32,6 +32,8 @@ app.use('/api/users', userRoutes);
 app.use(notFound);
 app.use(errorHandler);
 
+const __dirname = path.resolve(); // Set __dirname to the current working directory
+
 if (process.env.NODE_ENV === 'staging') {
   app.use(express.static('frontend/build'));
 
