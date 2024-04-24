@@ -43,18 +43,30 @@ const authUserGoogleCallback = asyncHandler(async (req, res, next) => {
       failureRedirect: '/',
       session: false,
     },
-    async (err, user) => {
-      console.log('user', user);
+    async (err, profile) => {
       if (err) {
         return next(err);
       }
-      if (!user) {
+      if (!profile) {
         return res.redirect('/');
       }
 
-      //since Register through google, verify become true terus
-      user.verified = true;
-      await user.save();
+      const defaultEmail = profile.emails[0].value;
+
+      if (!defaultEmail) {
+        return cb(null, false, { message: 'Email not found' });
+      }
+
+      let user = await User.findOne({ email: defaultEmail });
+
+      if (!user) {
+        user = await User.create({
+          name: profile.displayName,
+          email: defaultEmail,
+          authMethods: [{ provider: profile.provider, providerId: profile.id }],
+          verified: true,
+        });
+      }
 
       generateToken(res, user._id);
       res.redirect(`/`);

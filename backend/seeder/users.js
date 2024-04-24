@@ -5,7 +5,6 @@ import mongoose from 'mongoose';
 const users = [
   {
     email: 'admin@admin.com',
-    password: bcrypt.hashSync('1', 10),
     name: 'Admin User',
     role: 'admin',
     addresses: [
@@ -26,10 +25,16 @@ const users = [
       },
     ],
     phone: '0123456789',
+    defaultAddressIndex: 0,
+    authMethods: [
+      {
+        provider: 'local',
+        password: bcrypt.hashSync('1', 10),
+      },
+    ],
   },
   {
     email: 'test@test.com',
-    password: bcrypt.hashSync('1', 10),
     name: 'Test User',
     role: 'user',
     addresses: [
@@ -42,11 +47,17 @@ const users = [
         zipCode: '98000',
       },
     ],
-    phone: '0123456789',
+    phone: '01234567890',
+    defaultAddressIndex: 0,
+    authMethods: [
+      {
+        provider: 'local',
+        password: bcrypt.hashSync('1', 10),
+      },
+    ],
   },
   {
     email: 'test2@test.com',
-    password: bcrypt.hashSync('1', 10),
     name: 'Test 2 User',
     role: 'user',
     addresses: [
@@ -67,7 +78,37 @@ const users = [
         zipCode: '98000',
       },
     ],
-    phone: '0123456789',
+    phone: '01234567891',
+    defaultAddressIndex: 1,
+    authMethods: [
+      {
+        provider: 'local',
+        password: bcrypt.hashSync('1', 10),
+      },
+    ],
+  },
+  {
+    email: 'rider@rider.com',
+    name: 'Rider User',
+    role: 'rider',
+    phone: '01234567892',
+    authMethods: [
+      {
+        provider: 'local',
+        password: bcrypt.hashSync('1', 10),
+      },
+    ],
+    addresses: [
+      {
+        _id: new mongoose.Types.ObjectId(),
+        addressName: 'Home',
+        street: '123 Rider',
+        city: 'Miri',
+        state: 'Sarawak',
+        zipCode: '98000',
+      },
+    ],
+    defaultAddressIndex: 0,
   },
 ];
 

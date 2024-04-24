@@ -12,10 +12,7 @@ import {
 import { protect, admin } from '../middleware/authMiddleware.js';
 import checkObjectId from '../middleware/checkObjectId.js';
 import validateRequest from '../middleware/validateRequest.js';
-import {
-  localRegisterSchema,
-  googleRegisterSchema,
-} from '../validations/userValidation.js';
+import { localRegisterSchema } from '../validations/userValidation.js';
 
 const router = express.Router();
 
