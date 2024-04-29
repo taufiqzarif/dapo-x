@@ -20,7 +20,7 @@ const protect = asyncHandler(async (req, res, next) => {
     );
 
     // Check if user role is valid
-    if (!req.user && !roles.includes(req.user.role)) {
+    if (!req.user || !(req.user.role in roles)) {
       res.status(401);
       throw new Error('Not authorized, please login');
     }
@@ -45,7 +45,7 @@ const admin = asyncHandler(async (req, res, next) => {
       '-authMethods.password'
     );
 
-    if (!req.user && req.user.role !== roles.admin) {
+    if (!req.user || req.user.role !== roles.admin) {
       res.status(401);
       throw new Error('Not authorized as an admin');
     }
