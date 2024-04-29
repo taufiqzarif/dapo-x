@@ -14,7 +14,9 @@ const protect = asyncHandler(async (req, res, next) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     // GET user from DB
-    req.user = await User.findById(decoded.userId).select('-password');
+    req.user = await User.findById(decoded.userId).select(
+      '-authMethods.password'
+    );
     next();
   } else {
     res.status(401);
@@ -31,7 +33,9 @@ const admin = asyncHandler(async (req, res, next) => {
   if (token) {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    req.user = await User.findById(decoded.userId).select('-password');
+    req.user = await User.findById(decoded.userId).select(
+      '-authMethods.password'
+    );
 
     if (req.user && req.user.role === 'admin') {
       next();
