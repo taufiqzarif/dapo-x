@@ -23,7 +23,7 @@ router
 router.post('/auth', authUser);
 router.post('/logout', protect, logoutUser);
 router.route('/profile').get(protect, getUserProfile);
-router.get('/:id', protect, admin, checkObjectId, getUserById);
+router.route('/:id').get(protect, admin, checkObjectId, getUserById);
 
 router.get('/auth/google', authUserGoogle);
 
