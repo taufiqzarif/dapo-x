@@ -30,7 +30,7 @@ const Navbar = () => {
   return (
     <nav className='flex items-center justify-between flex-wrap bg-neutral-800 p-6'>
       <div className='flex items-center flex-shrink-0 text-white mr-6'>
-        <span className='font-semibold text-xl tracking-tight'>Dapo 1291</span>
+        <span className='font-semibold text-xl tracking-tight'>うち 1291</span>
       </div>
       <div className='block lg:hidden'>
         <button className='flex items-center px-3 py-2 border rounded text-white border-teal-400 hover:text-white hover:border-white'>
