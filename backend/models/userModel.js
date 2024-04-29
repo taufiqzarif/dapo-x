@@ -1,6 +1,13 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 
+const roles = {
+  admin: 'admin',
+  rider: 'rider',
+  user: 'user',
+  guest: 'guest',
+};
+
 const authSchema = mongoose.Schema(
   {
     provider: { type: String, required: true }, // 'local', 'google'
@@ -24,7 +31,12 @@ const userSchema = mongoose.Schema(
     email: { type: String, required: true, unique: true },
     name: { type: String, required: true },
     authMethods: [authSchema],
-    role: { type: String, required: true, default: 'user' },
+    role: {
+      type: String,
+      enum: Object.values(roles),
+      required: true,
+      default: roles.user,
+    },
     defaultAddress: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Address',

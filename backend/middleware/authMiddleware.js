@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import asyncHandler from './asyncHandler.js';
 import User from '../models/userModel.js';
+import { roles } from '../utils/roles.js';
 
 // Protect routes
 const protect = asyncHandler(async (req, res, next) => {
@@ -17,6 +18,13 @@ const protect = asyncHandler(async (req, res, next) => {
     req.user = await User.findById(decoded.userId).select(
       '-authMethods.password'
     );
+
+    // Check if user role is valid
+    if (!req.user && !roles.includes(req.user.role)) {
+      res.status(401);
+      throw new Error('Not authorized, please login');
+    }
+
     next();
   } else {
     res.status(401);
@@ -37,12 +45,12 @@ const admin = asyncHandler(async (req, res, next) => {
       '-authMethods.password'
     );
 
-    if (req.user && req.user.role === 'admin') {
-      next();
-    } else {
+    if (!req.user && req.user.role !== roles.admin) {
       res.status(401);
       throw new Error('Not authorized as an admin');
     }
+
+    next();
   } else {
     res.status(401);
     throw new Error('Not authorized, no token');
