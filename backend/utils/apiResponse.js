@@ -3,31 +3,31 @@ const APIResponse = {
     return res.status(200).json({
       success: true,
       data: data,
-      message: message,
+      message: message || 'Success',
     });
   },
   badRequest: (res, message) => {
     return res.status(400).json({
       success: false,
-      message: message,
+      message: message || 'Bad request',
     });
   },
   notFound: (res, message) => {
     return res.status(404).json({
       success: false,
-      message: message,
+      message: message || 'Not found',
     });
   },
   unauthorized: (res, message) => {
     return res.status(401).json({
       success: false,
-      message: message,
+      message: message || 'Unauthorized',
     });
   },
   forbidden: (res, message) => {
     return res.status(403).json({
       success: false,
-      message: message,
+      message: message || 'Forbidden',
     });
   },
 };
