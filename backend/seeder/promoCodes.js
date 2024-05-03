@@ -3,7 +3,7 @@ const promoCodes = [
     code: 'NEWUSER',
     discount: 10,
     validFrom: '2021-09-01T00:00:00.000Z',
-    validUntil: '9999-09-01T00:00:00.000Z',
+    validUntil: null,
     usageLimit: 1,
     newUsersOnly: true,
     active: true,
