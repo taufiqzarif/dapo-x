@@ -7,7 +7,7 @@ const orderSchema = mongoose.Schema(
       required: true,
       ref: 'User',
     },
-    menuItems: [
+    orderItems: [
       {
         item: {
           type: mongoose.Schema.Types.ObjectId,
@@ -66,6 +66,11 @@ const orderSchema = mongoose.Schema(
       type: Boolean,
       required: true,
       default: false,
+    },
+    commissionPercentage: {
+      type: Number,
+      required: true,
+      default: 0.0,
     },
     qrCode: {
       trackingNumber: { type: String, required: true },

@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
+import { roles } from '../utils/roles.js';
 
 const authSchema = mongoose.Schema(
   {
@@ -24,7 +25,12 @@ const userSchema = mongoose.Schema(
     email: { type: String, required: true, unique: true },
     name: { type: String, required: true },
     authMethods: [authSchema],
-    role: { type: String, required: true, default: 'user' },
+    role: {
+      type: String,
+      enum: Object.values(roles),
+      required: true,
+      default: roles.user,
+    },
     defaultAddress: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Address',
@@ -32,6 +38,16 @@ const userSchema = mongoose.Schema(
     addresses: [addressSchema],
     phone: { type: String, unique: true },
     verified: { type: Boolean, default: false }, // Limit access to unverified users e.g. (order placement)
+    promoUsages: [
+      {
+        promoCode: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'PromoCode',
+        },
+        usedCount: { type: Number, required: true, default: 0 },
+        usedOn: { type: Date, default: Date.now },
+      },
+    ],
   },
   { timestamps: true }
 );

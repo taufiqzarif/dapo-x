@@ -1,11 +1,13 @@
 import dotenv from 'dotenv';
 import users from './users.js';
 import menuItems from './menuItems.js';
+import promoCodes from './promoCodes.js';
 import connectDB from '../config/db.js';
 import User from '../models/userModel.js';
 import MenuItem from '../models/menuItemModel.js';
 import Order from '../models/orderModel.js';
 import Review from '../models/reviewModel.js';
+import PromoCode from '../models/promoCodeModel.js';
 dotenv.config();
 
 connectDB();
@@ -16,6 +18,7 @@ const importData = async () => {
     await Review.deleteMany();
     await User.deleteMany();
     await MenuItem.deleteMany();
+    await PromoCode.deleteMany();
 
     const createdUsers = await User.insertMany(users);
 
@@ -26,6 +29,8 @@ const importData = async () => {
     });
 
     await MenuItem.insertMany(sampleMenuItems);
+
+    await PromoCode.insertMany(promoCodes);
 
     // Assign default address to admin user
     createdUsers[0].defaultAddress = createdUsers[0].addresses[0]._id;
@@ -45,6 +50,7 @@ const destroyData = async () => {
     await Review.deleteMany();
     await User.deleteMany();
     await MenuItem.deleteMany();
+    await PromoCode.deleteMany();
 
     console.log('Data Destroyed!'.red.inverse);
     process.exit();
