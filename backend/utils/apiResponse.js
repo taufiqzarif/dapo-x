@@ -37,6 +37,12 @@ const APIResponse = {
       message: message || 'Forbidden',
     });
   },
+  serverError: (res, message) => {
+    return res.status(500).json({
+      success: false,
+      message: message || 'Server error',
+    });
+  },
 };
 
 export default APIResponse;

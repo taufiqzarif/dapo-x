@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import users from './users.js';
-import menuItems from './menuItems.js';
+import { menuItems, menuCategory, menuType } from './menuItems.js';
 import promoCodes from './promoCodes.js';
 import connectDB from '../config/db.js';
 import User from '../models/userModel.js';
@@ -8,6 +8,8 @@ import MenuItem from '../models/menuItemModel.js';
 import Order from '../models/orderModel.js';
 import Review from '../models/reviewModel.js';
 import PromoCode from '../models/promoCodeModel.js';
+import MenuCategory from '../models/menuCategoryModel.js';
+import MenuType from '../models/menuTypeModel.js';
 dotenv.config();
 
 connectDB();
@@ -19,6 +21,8 @@ const importData = async () => {
     await User.deleteMany();
     await MenuItem.deleteMany();
     await PromoCode.deleteMany();
+    await MenuCategory.deleteMany();
+    await MenuType.deleteMany();
 
     const createdUsers = await User.insertMany(users);
 
@@ -28,6 +32,8 @@ const importData = async () => {
       return { ...menuItem, userId: adminUser };
     });
 
+    await MenuCategory.create(menuCategory);
+    await MenuType.create(menuType);
     await MenuItem.insertMany(sampleMenuItems);
 
     await PromoCode.insertMany(promoCodes);
@@ -51,6 +57,8 @@ const destroyData = async () => {
     await User.deleteMany();
     await MenuItem.deleteMany();
     await PromoCode.deleteMany();
+    await MenuCategory.deleteMany();
+    await MenuType.deleteMany();
 
     console.log('Data Destroyed!'.red.inverse);
     process.exit();

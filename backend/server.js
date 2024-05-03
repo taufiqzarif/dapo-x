@@ -6,6 +6,7 @@ import connectDB from './config/db.js';
 import passport from 'passport';
 import userRoutes from './routes/userRoutes.js';
 import promoCodeRoutes from './routes/promoCodeRoutes.js';
+import menuItemRoutes from './routes/menuItemRoutes.js';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 import './config/passportConfig.js';
 dotenv.config();
@@ -29,6 +30,7 @@ app.use(cookieParser());
 app.use(passport.initialize());
 
 app.use('/api/users', userRoutes);
+app.use('/api/menus', menuItemRoutes);
 app.use('/api/promocodes', promoCodeRoutes);
 
 const __dirname = path.resolve(); // Set __dirname to the current working directory
