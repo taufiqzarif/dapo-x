@@ -1,12 +1,6 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
-
-const roles = {
-  admin: 'admin',
-  rider: 'rider',
-  user: 'user',
-  guest: 'guest',
-};
+import { roles } from '../utils/roles.js';
 
 const authSchema = mongoose.Schema(
   {

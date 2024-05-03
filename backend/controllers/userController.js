@@ -2,24 +2,21 @@ import passport from 'passport';
 import asyncHandler from '../middleware/asyncHandler.js';
 import generateToken from '../utils/generateToken.js';
 import User from '../models/userModel.js';
+import APIResponse from '../utils/apiResponse.js';
 
 // @desc    Auth user & get token
 // @route   POST /api/users/login
 // @access  Public
 const authUser = asyncHandler(async (req, res, next) => {
   passport.authenticate('local', { session: false }, (err, user) => {
-    if (err || !user) {
-      res.status(401).json({
-        message: 'Invalid email or password',
-      });
+    if (!err && user) {
+      APIResponse.success(res, 'Already logged in');
+    } else if (err || !user) {
+      APIResponse.unauthorized(res, 'Invalid email or password');
     } else {
       generateToken(res, user._id);
 
-      res.status(200).json({
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-      });
+      APIResponse.success(res, 'Login successful');
     }
   })(req, res, next);
 });
@@ -70,6 +67,7 @@ const authUserGoogleCallback = asyncHandler(async (req, res, next) => {
 
       generateToken(res, user._id);
       res.redirect(`/`);
+      APIResponse.success(res, 'Google authentication successful');
     }
   )(req, res, next);
 });
@@ -90,15 +88,13 @@ const registerUser = asyncHandler(async (req, res) => {
   // Check if the user already exists
   const userExists = await User.findOne({ email });
   if (userExists) {
-    res.status(400);
-    throw new Error('Email already registered');
+    APIResponse.badRequest(res, 'User already exists');
   }
 
   // Check if the phone number is already in use
   const phoneExists = await User.findOne({ phone });
   if (phoneExists) {
-    res.status(400);
-    throw new Error('Phone number already registered');
+    APIResponse.badRequest(res, 'Phone number already in use');
   }
 
   // Check if the default address index is out of range
@@ -107,8 +103,7 @@ const registerUser = asyncHandler(async (req, res) => {
     defaultAddressIndex !== undefined &&
     (defaultAddressIndex < 0 || defaultAddressIndex >= addresses.length)
   ) {
-    res.status(400);
-    throw new Error('Default address index out of range');
+    APIResponse.badRequest(res, 'Default address index out of range');
   }
 
   // Create the user with the initial data including addresses
@@ -128,11 +123,11 @@ const registerUser = asyncHandler(async (req, res) => {
   generateToken(res, user._id);
 
   // Respond with the new user's information
-  res.status(201).json({
-    _id: user._id,
-    name: user.name,
-    email: user.email,
-  });
+  APIResponse.created(
+    res,
+    { _id: user._id, name: user.name, email: user.email },
+    'User created successfully'
+  );
 });
 
 // @desc    Log user out
@@ -144,25 +139,21 @@ const logoutUser = asyncHandler(async (req, res) => {
     httpOnly: true,
   });
 
-  res.status(200).json({ message: 'Logged out' });
+  APIResponse.success(res, 'Logged out successfully');
 });
 
 // @desc    Get user profile
 // @route   GET /api/users/profile
 // @access  Private
 const getUserProfile = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user._id).select('-password');
+  const user = await User.findById(req.user._id).select(
+    '-authMethods.password'
+  );
 
   if (user) {
-    res.status(200).json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      role: user.role,
-    });
+    APIResponse.success(res, user, 'User profile retrieved successfully');
   } else {
-    res.status(404);
-    throw new Error('User not found');
+    APIResponse.notFound(res, 'User not found');
   }
 });
 
@@ -175,10 +166,9 @@ const getUserById = asyncHandler(async (req, res) => {
   );
 
   if (user) {
-    res.status(200).json(user);
+    APIResponse.success(res, user, 'User retrieved successfully');
   } else {
-    res.status(404);
-    throw new Error('User not found');
+    APIResponse.notFound(res, 'User not found');
   }
 });
 
@@ -188,10 +178,9 @@ const getUserById = asyncHandler(async (req, res) => {
 const getUsers = asyncHandler(async (req, res) => {
   const users = await User.find({});
   if (users) {
-    res.status(200).json(users);
+    APIResponse.success(res, users, 'Users retrieved successfully');
   } else {
-    res.status(404);
-    throw new Error('No users found');
+    APIResponse.notFound(res, 'No users found');
   }
 });
 

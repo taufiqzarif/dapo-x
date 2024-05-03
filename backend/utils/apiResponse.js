@@ -6,6 +6,13 @@ const APIResponse = {
       message: message || 'Success',
     });
   },
+  created: (res, data, message) => {
+    return res.status(201).json({
+      success: true,
+      data: data,
+      message: message || 'Created',
+    });
+  },
   badRequest: (res, message) => {
     return res.status(400).json({
       success: false,
