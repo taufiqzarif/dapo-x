@@ -1,9 +1,26 @@
+import mongoose from 'mongoose';
+
+const menuCategory = {
+  _id: new mongoose.Types.ObjectId(),
+  name: 'food',
+  description: 'Food Menu Items',
+  imageURL: '/images/food.jpg',
+};
+
+const menuType = {
+  _id: new mongoose.Types.ObjectId(),
+  name: 'daily',
+  description: 'Daily Menu Items',
+  imageURL: '/images/daily.jpg',
+};
+
 const menuItems = [
   {
     name: 'Garlic Bread',
     description: 'Simple and delicious garlic bread',
     price: 5.99,
-    category: 'daily',
+    menuCategory: menuCategory._id,
+    menuType: menuType._id,
     availability: true,
     availableDate: new Date(),
     countInStock: 100,
@@ -13,7 +30,8 @@ const menuItems = [
     name: 'Chicken Alfredo',
     description: 'Creamy chicken fettuccine alfredo',
     price: 15.99,
-    category: 'daily',
+    menuCategory: menuCategory._id,
+    menuType: menuType._id,
     availability: true,
     availableDate: new Date(),
     countInStock: 100,
@@ -23,7 +41,8 @@ const menuItems = [
     name: 'Pepperoni Pizza',
     description: 'Classic pepperoni pizza',
     price: 12.99,
-    category: 'daily',
+    menuCategory: menuCategory._id,
+    menuType: menuType._id,
     availability: true,
     availableDate: new Date(),
     countInStock: 100,
@@ -33,7 +52,8 @@ const menuItems = [
     name: 'Spaghetti and Meatballs',
     description: 'Spaghetti and meatballs in marinara sauce',
     price: 13.99,
-    category: 'daily',
+    menuCategory: menuCategory._id,
+    menuType: menuType._id,
     availability: true,
     availableDate: new Date(),
     countInStock: 100,
@@ -44,7 +64,8 @@ const menuItems = [
     description:
       'Crisp romaine lettuce with croutons, parmesan cheese, and caesar dressing',
     price: 8.99,
-    category: 'daily',
+    menuCategory: menuCategory._id,
+    menuType: menuType._id,
     availability: true,
     availableDate: new Date(),
     countInStock: 0,
@@ -54,7 +75,8 @@ const menuItems = [
     name: 'Cheeseburger',
     description: 'Classic cheeseburger with lettuce, tomato, and pickles',
     price: 10.99,
-    category: 'daily',
+    menuCategory: menuCategory._id,
+    menuType: menuType._id,
     availability: true,
     availableDate: new Date(),
     countInStock: 99,
@@ -64,7 +86,8 @@ const menuItems = [
     name: 'Chicken Tenders',
     description: 'Crispy chicken tenders with your choice of dipping sauce',
     price: 9.99,
-    category: 'special',
+    menuCategory: menuCategory._id,
+    menuType: menuType._id,
     availability: true,
     availableDate: new Date(),
     countInStock: 100,
@@ -74,7 +97,8 @@ const menuItems = [
     name: 'Chocolate Cake',
     description: 'Rich and decadent chocolate cake',
     price: 6.99,
-    category: 'special',
+    menuCategory: menuCategory._id,
+    menuType: menuType._id,
     availability: true,
     availableDate: new Date(),
     countInStock: 100,
@@ -82,4 +106,4 @@ const menuItems = [
   },
 ];
 
-export default menuItems;
+export { menuCategory, menuType, menuItems };

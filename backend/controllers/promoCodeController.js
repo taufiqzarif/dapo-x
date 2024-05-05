@@ -6,7 +6,6 @@ import PromoCode from '../models/promoCodeModel.js';
 // @route   GET /api/promocodes
 // @access  Private/Admin
 const getPromoCodes = asyncHandler(async (req, res) => {
-  console.log('in2');
   const promoCodes = await PromoCode.find({});
   APIResponse.success(res, promoCodes, 'Promo codes retrieved successfully');
 });
