@@ -15,7 +15,7 @@ const orderSchema = mongoose.Schema(
           ref: 'MenuItem',
         },
         quantity: { type: Number, required: true },
-        price: { type: Number, required: true },
+        _id: false,
       },
     ],
     deliveryPrice: {
@@ -69,7 +69,7 @@ const orderSchema = mongoose.Schema(
     },
     commissionPercentage: {
       type: Number,
-      required: true,
+      required: false,
       default: 0.0,
     },
     qrCode: {
