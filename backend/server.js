@@ -35,15 +35,15 @@ app.use('/api/menus', menuItemRoutes);
 app.use('/api/promocodes', promoCodeRoutes);
 app.use('/api/orders', orderRoutes);
 
-// const __dirname = path.resolve(); // Set __dirname to the current working directory
+const __dirname = path.resolve(); // Set __dirname to the current working directory
 
-// if (process.env.NODE_ENV === 'staging') {
-//   app.use(express.static('frontend/build'));
+if (process.env.NODE_ENV === 'staging') {
+  app.use(express.static('frontend/dist'));
 
-//   app.get('*', (req, res) =>
-//     res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'))
-//   );
-// }
+  app.get('*', (req, res) =>
+    res.sendFile(path.resolve(__dirname, 'frontend', 'dist', 'index.html'))
+  );
+}
 
 app.get('/', (req, res) => {
   res.send('API is running...');
