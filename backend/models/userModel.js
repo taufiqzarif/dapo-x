@@ -12,13 +12,16 @@ const authSchema = mongoose.Schema(
   { _id: false }
 );
 
-const addressSchema = mongoose.Schema({
-  addressName: { type: String },
-  street: { type: String, required: true },
-  city: { type: String, required: true },
-  state: { type: String, required: true },
-  zipCode: { type: String, required: true },
-});
+const addressSchema = mongoose.Schema(
+  {
+    addressName: { type: String },
+    street: { type: String, required: true },
+    city: { type: String, required: true },
+    state: { type: String, required: true },
+    zipCode: { type: String, required: true },
+  },
+  { _id: false }
+);
 
 const userSchema = mongoose.Schema(
   {

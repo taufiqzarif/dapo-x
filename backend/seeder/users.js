@@ -4,12 +4,12 @@ import mongoose from 'mongoose';
 // seed data for users
 const users = [
   {
+    _id: new mongoose.Types.ObjectId(),
     email: 'admin@admin.com',
     name: 'Admin User',
     role: 'admin',
     addresses: [
       {
-        _id: new mongoose.Types.ObjectId(),
         addressName: 'Home',
         street: '123 Admin',
         city: 'Miri',
@@ -17,7 +17,6 @@ const users = [
         zipCode: '98000',
       },
       {
-        _id: new mongoose.Types.ObjectId(),
         street: '456 No address name',
         city: 'Miri',
         state: 'Sarawak',
@@ -34,12 +33,12 @@ const users = [
     ],
   },
   {
+    _id: new mongoose.Types.ObjectId(),
     email: 'test@test.com',
     name: 'Test User',
     role: 'user',
     addresses: [
       {
-        _id: new mongoose.Types.ObjectId(),
         addressName: 'Home',
         street: '123 Test',
         city: 'Miri',
@@ -57,12 +56,12 @@ const users = [
     ],
   },
   {
+    _id: new mongoose.Types.ObjectId(),
     email: 'test2@test.com',
     name: 'Test 2 User',
     role: 'user',
     addresses: [
       {
-        _id: new mongoose.Types.ObjectId(),
         addressName: 'Home',
         street: '123 Test 2',
         city: 'Miri',
@@ -70,7 +69,6 @@ const users = [
         zipCode: '98000',
       },
       {
-        _id: new mongoose.Types.ObjectId(),
         addressName: 'Work',
         street: '456 Test 2',
         city: 'Miri',
@@ -88,6 +86,7 @@ const users = [
     ],
   },
   {
+    _id: new mongoose.Types.ObjectId(),
     email: 'rider@rider.com',
     name: 'Rider User',
     role: 'rider',
@@ -100,7 +99,6 @@ const users = [
     ],
     addresses: [
       {
-        _id: new mongoose.Types.ObjectId(),
         addressName: 'Home',
         street: '123 Rider',
         city: 'Miri',

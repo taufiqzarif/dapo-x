@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 import users from './users.js';
 import { menuItems, menuCategory, menuType } from './menuItems.js';
 import promoCodes from './promoCodes.js';
+import orders from './orders.js';
 import connectDB from '../config/db.js';
 import User from '../models/userModel.js';
 import MenuItem from '../models/menuItemModel.js';
@@ -37,6 +38,7 @@ const importData = async () => {
     await MenuItem.insertMany(sampleMenuItems);
 
     await PromoCode.insertMany(promoCodes);
+    await Order.insertMany(orders);
 
     // Assign default address to admin user
     createdUsers[0].defaultAddress = createdUsers[0].addresses[0]._id;

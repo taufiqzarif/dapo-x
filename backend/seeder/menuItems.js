@@ -16,6 +16,7 @@ const menuType = {
 
 const menuItems = [
   {
+    _id: new mongoose.Types.ObjectId(),
     name: 'Garlic Bread',
     description: 'Simple and delicious garlic bread',
     price: 5.99,
@@ -27,6 +28,7 @@ const menuItems = [
     imageURL: '/images/garlic-bread.jpg',
   },
   {
+    _id: new mongoose.Types.ObjectId(),
     name: 'Chicken Alfredo',
     description: 'Creamy chicken fettuccine alfredo',
     price: 15.99,
@@ -38,6 +40,7 @@ const menuItems = [
     imageURL: '/images/chicken-alfredo.jpg',
   },
   {
+    _id: new mongoose.Types.ObjectId(),
     name: 'Pepperoni Pizza',
     description: 'Classic pepperoni pizza',
     price: 12.99,
@@ -49,6 +52,7 @@ const menuItems = [
     imageURL: '/images/pepperoni-pizza.jpg',
   },
   {
+    _id: new mongoose.Types.ObjectId(),
     name: 'Spaghetti and Meatballs',
     description: 'Spaghetti and meatballs in marinara sauce',
     price: 13.99,
@@ -60,6 +64,7 @@ const menuItems = [
     imageURL: '/images/spaghetti-meatballs.jpg',
   },
   {
+    _id: new mongoose.Types.ObjectId(),
     name: 'Caesar Salad',
     description:
       'Crisp romaine lettuce with croutons, parmesan cheese, and caesar dressing',
@@ -72,6 +77,7 @@ const menuItems = [
     imageURL: '/images/caesar-salad.jpg',
   },
   {
+    _id: new mongoose.Types.ObjectId(),
     name: 'Cheeseburger',
     description: 'Classic cheeseburger with lettuce, tomato, and pickles',
     price: 10.99,
@@ -83,6 +89,7 @@ const menuItems = [
     imageURL: '/images/cheeseburger.jpg',
   },
   {
+    _id: new mongoose.Types.ObjectId(),
     name: 'Chicken Tenders',
     description: 'Crispy chicken tenders with your choice of dipping sauce',
     price: 9.99,
@@ -94,6 +101,7 @@ const menuItems = [
     imageURL: '/images/chicken-tenders.jpg',
   },
   {
+    _id: new mongoose.Types.ObjectId(),
     name: 'Chocolate Cake',
     description: 'Rich and decadent chocolate cake',
     price: 6.99,
