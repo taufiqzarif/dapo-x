@@ -12,11 +12,17 @@ import {
 } from '../controllers/promoCodeController.js';
 import validateRequest from '../middleware/validateRequest.js';
 import promoCodeSchema from '../validations/promoCodeValidation.js';
+import applyPromoCodeSchema from '../validations/applyPromoCodeValidation.js';
 
 const router = express.Router();
 
 router.route('/').get(protect, admin, getPromoCodes);
-router.post('/apply', protect, applyPromoCode);
+router.post(
+  '/apply',
+  protect,
+  validateRequest(applyPromoCodeSchema),
+  applyPromoCode
+);
 router.post('/cancel', protect, cancelPromoCode);
 
 // Admin
