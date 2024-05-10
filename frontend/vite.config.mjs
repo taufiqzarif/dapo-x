@@ -4,7 +4,8 @@ import react from '@vitejs/plugin-react'
 // https://vitejs.dev/config/
 export default defineConfig({
   build: {
-    sourcemap: false,
+    sourcemap: 'hidden',
+    outDir: 'build',
   },
   plugins: [react()],
   server: {
