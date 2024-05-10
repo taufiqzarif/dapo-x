@@ -48,7 +48,7 @@ const userSchema = mongoose.Schema(
           ref: 'PromoCode',
         },
         usedCount: { type: Number, required: true, default: 0 },
-        usedOn: { type: Date, default: Date.now },
+        _id: false,
       },
     ],
   },

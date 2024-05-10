@@ -27,18 +27,25 @@ const getPromoCodeByCode = asyncHandler(async (req, res) => {
 // @route   POST /api/promocodes/apply
 // @access  Private
 const applyPromoCode = asyncHandler(async (req, res) => {
-  const { promoCodeId } = req.body;
+  let { code } = req.body;
   const user = req.user;
 
   if (!user) {
     return APIResponse.unauthorized(res, 'User not found');
   }
 
-  if (!promoCodeId) {
+  if (!code) {
     return APIResponse.badRequest(res, 'Promo code is required');
   }
 
-  const promoCode = await PromoCode.findById(promoCodeId);
+  // Only one promo code is allowed
+  if (Array.isArray(code)) {
+    return APIResponse.badRequest(res, 'Only one promo code is allowed');
+  }
+
+  code = code.toUpperCase().trim();
+
+  const promoCode = await PromoCode.findOne({ code });
 
   if (!promoCode) {
     return APIResponse.notFound(res, 'Invalid promo code');
@@ -60,49 +67,52 @@ const applyPromoCode = asyncHandler(async (req, res) => {
   }
 
   // Check user's eligibility to use promo code
-  const userPromoUsage = user.promoUsages.find((p) =>
-    p.promoCode.equals(promoCodeId)
-  );
-  if (!userPromoUsage) {
-    return APIResponse.badRequest(
-      res,
-      'You are not eligible to use this promo code'
-    );
-  }
+  const userPromoUsage = user.promoUsages.find((p) => p.promoCode.equals(code));
 
   // Check if user reached the usage limit for the promo code
-  if (userPromoUsage.usedCount >= promoCode.maxUsage) {
+  if (userPromoUsage && userPromoUsage.usedCount >= promoCode.maxUsage) {
     return APIResponse.badRequest(
       res,
       'You have reached the maximum usage limit for this promo code'
     );
   }
 
-  APIResponse.success(res, promoCodeId, 'Promo code applied successfully');
+  // Create a new promo usage for the user, else if exist increment the used count
+  if (!userPromoUsage) {
+    user.promoUsages.push({
+      promoCode: promoCode._id,
+      usedCount: 1,
+    });
+  } else {
+    userPromoUsage.usedCount += 1;
+  }
+  await user.save();
+
+  APIResponse.success(res, code, 'Promo code applied successfully');
 });
 
 // @desc    Cancel promo code
 // @route   POST /api/promocodes
 // @access  Private
 const cancelPromoCode = asyncHandler(async (req, res) => {
-  const { promoCodeId } = req.body;
+  const { code } = req.body;
   const user = req.user;
 
   if (!user) {
     return APIResponse.unauthorized(res, 'User not found');
   }
 
-  if (!promoCodeId) {
+  if (!code) {
     return APIResponse.badRequest(res, 'Promo code is required');
   }
 
-  const promoCode = await PromoCode.findById(promoCodeId);
+  const promoCode = await PromoCode.findOne(code);
 
   if (!promoCode) {
     return APIResponse.notFound(res, 'Invalid promo code');
   }
 
-  APIResponse.success(res, promoCodeId, 'Promo code cancelled successfully');
+  APIResponse.success(res, code, 'Promo code cancelled successfully');
 });
 
 // @desc    Create promo code
@@ -120,7 +130,7 @@ const createPromoCode = asyncHandler(async (req, res) => {
   } = req.body;
 
   const newPromoCode = new PromoCode({
-    code,
+    code: code.toUpperCase().trim(),
     discount,
     validFrom,
     validUntil,
