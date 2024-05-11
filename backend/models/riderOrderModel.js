@@ -10,6 +10,7 @@ const riderOrderSchema = mongoose.Schema(
     orderItems: [
       { type: mongoose.Schema.Types.ObjectId, ref: 'Order', required: true },
     ],
+    // Total profit calculated from base fee, order value fee, distance fee, and tips
     profitAmount: { type: Number, required: true },
   },
   { timestamps: true }
