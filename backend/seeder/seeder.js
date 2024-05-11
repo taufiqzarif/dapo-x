@@ -36,7 +36,7 @@ const importData = async () => {
       return { ...menuItem, userId: adminUser };
     });
 
-    await Rider.insertMany([riders]);
+    await Rider.insertMany(riders);
     await MenuCategory.create(menuCategory);
     await MenuType.create(menuType);
     await MenuItem.insertMany(sampleMenuItems);
