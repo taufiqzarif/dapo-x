@@ -85,29 +85,6 @@ const users = [
       },
     ],
   },
-  {
-    _id: new mongoose.Types.ObjectId(),
-    email: 'rider@rider.com',
-    name: 'Rider User',
-    role: 'rider',
-    phone: '01234567892',
-    authMethods: [
-      {
-        provider: 'local',
-        password: bcrypt.hashSync('1', 10),
-      },
-    ],
-    addresses: [
-      {
-        addressName: 'Home',
-        street: '123 Rider',
-        city: 'Miri',
-        state: 'Sarawak',
-        zipCode: '98000',
-      },
-    ],
-    defaultAddressIndex: 0,
-  },
 ];
 
 export default users;

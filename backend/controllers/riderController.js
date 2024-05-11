@@ -8,7 +8,7 @@ import APIResponse from '../utils/apiResponse.js';
 // @route   POST /api/riders/login
 // @access  Public
 const authRider = asyncHandler(async (req, res, next) => {
-  passport.authenticate('local', { session: false }, (err, rider) => {
+  passport.authenticate('rider-local', { session: false }, (err, rider) => {
     if (err || !rider) {
       APIResponse.unauthorized(res, 'Invalid email or password');
     } else {

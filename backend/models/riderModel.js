@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import bcrypt from 'bcryptjs';
 
 const authSchema = mongoose.Schema(
   {
@@ -25,6 +26,28 @@ const riderSchema = mongoose.Schema(
   },
   { timestamps: true }
 );
+
+riderSchema.methods.matchPassword = async function (enteredPassword) {
+  const localAuth = this.authMethods.find(
+    (method) => method.provider === 'local'
+  );
+  if (!localAuth || !localAuth.password) {
+    throw new Error('Local authentication method not configured');
+  }
+  return await bcrypt.compare(enteredPassword, localAuth.password);
+};
+
+riderSchema.pre('save', async function (next) {
+  if (!this.isModified('password')) {
+    next();
+  }
+
+  const localAuth = this.authMethods.find(
+    (method) => method.provider === 'local'
+  );
+  const salt = await bcrypt.genSalt(10);
+  localAuth.password = await bcrypt.hash(localAuth.password, salt);
+});
 
 const Rider = mongoose.model('Rider', riderSchema);
 
