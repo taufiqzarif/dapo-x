@@ -3,6 +3,7 @@ import users from './users.js';
 import { menuItems, menuCategory, menuType } from './menuItems.js';
 import promoCodes from './promoCodes.js';
 import orders from './orders.js';
+import riders from './riders.js';
 import connectDB from '../config/db.js';
 import User from '../models/userModel.js';
 import MenuItem from '../models/menuItemModel.js';
@@ -11,6 +12,7 @@ import Review from '../models/reviewModel.js';
 import PromoCode from '../models/promoCodeModel.js';
 import MenuCategory from '../models/menuCategoryModel.js';
 import MenuType from '../models/menuTypeModel.js';
+import Rider from '../models/riderModel.js';
 dotenv.config();
 
 connectDB();
@@ -20,6 +22,7 @@ const importData = async () => {
     await Order.deleteMany();
     await Review.deleteMany();
     await User.deleteMany();
+    await Rider.deleteMany();
     await MenuItem.deleteMany();
     await PromoCode.deleteMany();
     await MenuCategory.deleteMany();
@@ -33,6 +36,7 @@ const importData = async () => {
       return { ...menuItem, userId: adminUser };
     });
 
+    await Rider.insertMany([riders]);
     await MenuCategory.create(menuCategory);
     await MenuType.create(menuType);
     await MenuItem.insertMany(sampleMenuItems);
@@ -57,6 +61,7 @@ const destroyData = async () => {
     await Order.deleteMany();
     await Review.deleteMany();
     await User.deleteMany();
+    await Rider.deleteMany();
     await MenuItem.deleteMany();
     await PromoCode.deleteMany();
     await MenuCategory.deleteMany();
