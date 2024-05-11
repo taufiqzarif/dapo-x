@@ -9,7 +9,6 @@ import APIResponse from '../utils/apiResponse.js';
 // @access  Public
 const authUser = asyncHandler(async (req, res, next) => {
   passport.authenticate('local', { session: false }, (err, user) => {
-    console.log(err, user);
     if (err || !user) {
       APIResponse.unauthorized(res, 'Invalid email or password');
     } else {
