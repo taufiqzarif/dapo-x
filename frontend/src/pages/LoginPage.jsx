@@ -45,9 +45,8 @@ const LoginPage = () => {
   };
 
   return (
-    <div>
-      Login Form
-      <div className='bg-[#f0f1f7] flex rounded-lg p-8 w-fit'>
+    <div className='flex justify-center items-center'>
+      <div className='bg-[#f0f1f7] rounded-lg p-8 w-[20%]'>
         <form onSubmit={handleSubmit}>
           <div className='items-center'>
             <FormField label='Email'></FormField>

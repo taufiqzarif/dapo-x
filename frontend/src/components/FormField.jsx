@@ -2,7 +2,7 @@ import React from 'react';
 
 const FormField = ({ label }) => {
   return (
-    <div>
+    <div className='mb-2'>
       <label className='font-bold mr-2'>{label}</label>
     </div>
   );
