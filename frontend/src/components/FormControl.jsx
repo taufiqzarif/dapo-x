@@ -4,7 +4,7 @@ const FormControl = ({ id, type, placeholder, value, onChange }) => {
       {/* <select id={id} placeholder={placeholder} value={value}></select>
       <textarea id={id} placeholder={placeholder} value={value}></textarea> */}
       <input
-        className='border rounded-md py-1 px-2 mb-4'
+        className='border rounded-md py-1 px-2 mb-4 w-[100%]'
         id={id}
         type={type}
         placeholder={placeholder}

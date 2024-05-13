@@ -64,8 +64,8 @@ const authUserGoogleCallback = asyncHandler(async (req, res, next) => {
       }
 
       generateToken(res, user._id);
-      res.redirect(`/`);
-      APIResponse.success(res, 'Google authentication successful');
+      res.redirect(`http://localhost:3000/`);
+      // return APIResponse.success(res, 'Google authentication successful');
     }
   )(req, res, next);
 });
