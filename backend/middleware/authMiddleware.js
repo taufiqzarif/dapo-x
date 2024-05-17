@@ -54,4 +54,29 @@ const admin = asyncHandler(async (req, res, next) => {
   }
 });
 
-export { protect, admin };
+// Check user
+const checkUser = asyncHandler(async (req, res, next) => {
+  let token;
+
+  token = req.cookies.jwt;
+
+  if (token) {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await User.findById(decoded.userId).select(
+      '-authMethods.password'
+    );
+
+    if (!user) {
+      // clear cookie
+      res.clearCookie('jwt');
+      req.user = null;
+      return APIResponse.unauthorized(res, 'Invalid user, please login');
+    } else {
+      req.user = user;
+    }
+  }
+
+  next();
+});
+
+export { protect, admin, checkUser };

@@ -9,7 +9,7 @@ import {
   getUserById,
   getUsers,
 } from '../controllers/userController.js';
-import { protect, admin } from '../middleware/authMiddleware.js';
+import { protect, admin, checkUser } from '../middleware/authMiddleware.js';
 import checkObjectId from '../middleware/checkObjectId.js';
 import validateRequest from '../middleware/validateRequest.js';
 import { localRegisterSchema } from '../validations/userValidation.js';
@@ -18,6 +18,13 @@ const router = express.Router();
 
 router
   .route('/')
+  .get(checkUser, (req, res) => {
+    if (req.user) {
+      res.render('/', { user: req.user }); // Pass user data if logged in
+    } else {
+      res.render('/'); // Render without user data
+    }
+  })
   .post(validateRequest(localRegisterSchema), registerUser)
   .get(protect, admin, getUsers);
 router.post('/auth', authUser);

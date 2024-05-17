@@ -29,6 +29,12 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         method: 'GET',
       }),
     }),
+    checkUserValidity: builder.query({
+      query: () => ({
+        url: `${USER_URL}/valid`,
+        method: 'GET',
+      }),
+    }),
   }),
 });
 
@@ -37,4 +43,5 @@ export const {
   useRegisterMutation,
   useLogoutMutation,
   useProfileQuery,
+  useCheckUserValidityQuery,
 } = usersApiSlice;
